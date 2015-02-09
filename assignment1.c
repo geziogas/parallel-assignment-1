@@ -12,7 +12,7 @@
 int main(int argc, char *argv[]) 
 {
 
-	// Variablesss
+	// Variables
 	int n,p,row,col;
 
 	// Check for wrong number of arguments
