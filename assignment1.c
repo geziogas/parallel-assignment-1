@@ -34,12 +34,17 @@ int main(int argc, char *argv[])
   	B=(double *)calloc(n*n,sizeof(double ));
   	C=(double *)calloc(n*n,sizeof(double )); //Result-matrix
 
-  	srand(time(NULL));
+  	srand(time(NULL)); //Used to change the seed according to time.
+
+  	// Set the random limit number
+  	double scaleLimit = 100.0;
+  	double divisor = (double)RAND_MAX/scaleLimit;
+
   	for(row=0;row<n;row++){
 		for(col=0;col<n;col++)
-		{
-			A[row*n+col]=rand()/(double)RAND_MAX;
-			B[row*n+col]=rand()/(double)RAND_MAX;
+		{			
+			A[row*n+col]=rand()/divisor;
+			B[row*n+col]=rand()/divisor;
 		}
 	}
 
@@ -71,6 +76,7 @@ int main(int argc, char *argv[])
 		printf("\n");
 	}
 
+	// Free memory after execution
 	free(A),free(B),free(C);
   	return 0;
 }
