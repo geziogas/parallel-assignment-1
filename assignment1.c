@@ -50,6 +50,8 @@ int main(int argc, char *argv[])
 
 	// Test code, to show the 2 random generated matrices
 	printf("\nMatrix A:\n");
+	printf("\nMatrix A:\n");
+	printf("\nMatrix A:\n");
 	for(row=0;row<n;row++){
 		for(col=0;col<n;col++)
 		{
