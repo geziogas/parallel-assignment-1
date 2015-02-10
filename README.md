@@ -2,16 +2,18 @@
 ## Assignment 1
 ### Repository for 1st assignment of the course Programming of Parallel Computers
 
-- [x] Readme log file created.
+- [x] Added Makefile
 - [x] Process 0 created the random matrices
 - [ ] Nothing 2!
 - [ ] Nothing 3!
 - [ ] Nothing 4!
 
 1. First ordered list item
-2. Another item
-	* Unordered sub-list.
+2. Runs on terminal with: `mpirun -np NP ./assignment1 NX NY`
+	* NP (Number of processes)
+	* NX and NY (should be the same) size of square matrix
 
+	
 ####Current Console Output
 
 ```
