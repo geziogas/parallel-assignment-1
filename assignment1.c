@@ -99,6 +99,15 @@ int main(int argc, char *argv[])
   	MPI_Comm_rank(proc_column,&column_rank);
   	MPI_Comm_size(proc_column,&column_size); // De kserw akoma pou to xrisimopoioun auto, den koitaksa parakatw ton kwdika
 
+	if(myid==0) {
+		printf("I am the root. Number of processes: %d\n",nproc);
+	}
+
+	printf("Welcome. I am process No %d / coords: %d.%d\n",myid,row_rank,column_rank);
+	printf("\n");
+
+
+
   	// Free memory after execution
   	MPI_Comm_free(&proc_row);
   	MPI_Comm_free(&proc_column);
