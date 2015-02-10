@@ -4,7 +4,7 @@
        Authors: Georgios Ziogas, Charalampos Kominos, Stavros Mavrakis
 
 *********************************************************************/
-// #include <mpi.h>
+#include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
