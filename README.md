@@ -10,7 +10,8 @@
 
 ####Current Console Output
 
-```I am the root proc.
+```
+I am the root proc.
 Size of matrices: 4
 number of processors: 4
 
@@ -42,4 +43,4 @@ Welcome. I am process No 2 / coords: 0.1
 Welcome. I am process No 3 / coords: 1.1
 ```
 
-~~~Done~~~
+~~Done~~
