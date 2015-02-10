@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[]) 
 {
-
+//test
 	// Variables
 	int n,p,row,col;
 
