@@ -2,11 +2,15 @@
 ## Assignment 1
 ### Repository for 1st assignment of the course Programming of Parallel Computers
 
-- [ ] Nothing !
-- [ ] Nothing 1!
+- [x] Readme log file created.
+- [x] Process 0 created the random matrices
 - [ ] Nothing 2!
 - [ ] Nothing 3!
-- [x] Nothing 4!
+- [ ] Nothing 4!
+
+1. First ordered list item
+2. Another item
+	* Unordered sub-list.
 
 ####Current Console Output
 
