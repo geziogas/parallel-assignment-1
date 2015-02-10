@@ -1,4 +1,5 @@
 # Programming for Parallel Computers
+
 ## Assignment 1
 ### Repository for 1st assignment of the course Programming of Parallel Computers
 
@@ -8,7 +9,7 @@
 - [ ] Nothing 3!
 - [ ] Nothing 4!
 
-1. Runs on terminal with: 'mpirun -np NP ./assignment1 NX NY'
+1. Runs on terminal with: `mpirun -np NP ./assignment1 NX NY`
 	* NP (Number of processes)
 	* NX and NY (should be the same) size of square matrix
 2. Item 2
