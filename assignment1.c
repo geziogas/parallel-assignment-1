@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
 	// Variables
 	int root = 0; //The root process
 	int n,row,col,nproc,my_id,row_rank,column_rank,row_size,column_size;
+	int blocklen,blocks;
 	MPI_Comm proc_grid,proc_row,proc_column;
 	int coords[2],pos[2],reorder=1,ndim=2,dims[2]={0,0},periods[2]={0,0};
 
@@ -41,22 +43,19 @@ int main(int argc, char *argv[])
 
 
 	// Check for wrong number of arguments
-	printf("\n");
-	if (argc!=3){
-
-    	printf("Wrong number of arguments.\nneeded 2 (Matrices Size, Processors)\n");
+	// printf("\n");
+	if (argc!=2){
 
 		if (my_id==root)
 		{
-    		printf("Wrong number of arguments.\nneeded 2 (Matrices Size, Processors)\n");
+    		printf("Wrong number of arguments.\nNeeded matrices size only (1 argument).\n");
     	}
-
+    	MPI_Finalize();
     	return 0;
   	}
 
 	// Converts string arguments to int
-	n = atoi(argv[1]);
-	nproc = atoi(argv[2]);
+	n = atoi(argv[1]);	
 
 	if (my_id==root)
 	{
@@ -129,7 +128,22 @@ int main(int argc, char *argv[])
 	}
 
 	printf("Welcome. I am process No %d / coords: %d.%d\n",my_id,row_rank,column_rank);
-	// printf("\n");
+	
+
+	/************************************************************
+	Part where we divide the matrices into blocks
+	We assume for simplicity that the partitioning is performed
+	like :  partition-length is the square root of nproc.
+	Nx = Ny = square_root(nproc)
+	*************************************************************/
+	blocks = sqrt(nproc); // One dimension number of blocks
+	blocklen = n/blocks;	  // length of each block
+	printf("Length of block: %d\n", blocklen);
+
+	// Create local blocks for the processors
+
+
+	MPI_Bcast(&blocklen,1,MPI_INT,0,proc_grid);
 
   	// Free memory after execution
   	MPI_Comm_free(&proc_row);
