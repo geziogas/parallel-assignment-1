@@ -5,7 +5,7 @@
 
 CC         =  mpicc
 CCFLAGS    =  -O3
-LIBS       =  -lmpi -lm
+LIBS       =  -lmpi
 
 all:
 	@echo "Usage: make hello"
