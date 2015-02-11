@@ -129,11 +129,7 @@ int main(int argc, char *argv[])
 
 	printf("Welcome. I am process No %d / coords: %d.%d\n",my_id,row_rank,column_rank);
 	
-//first task ->broadcast blocks
-//fox algorithm
-//Allgather???
-//print apo ton rank 0??
-//na grapsoume kai serial code???
+
 	/************************************************************
 	Part where we divide the matrices into blocks
 	We assume for simplicity that the partitioning is performed
