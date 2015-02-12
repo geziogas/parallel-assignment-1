@@ -161,11 +161,12 @@ int main(int argc, char *argv[])
 				MPI_Isend(&A[x],1,newtype,temp_rank,111,proc_grid,&r1);
 				MPI_Isend(&B[x],1,newtype,temp_rank,222,proc_grid,&r2);
 			}
-	} // The other processes receive their assigned block of data
-	else{
-		MPI_Recv(blockA,count*count,MPI_DOUBLE,0,111,proc_grid, &status);
-		MPI_Recv(blockB,count*count,MPI_DOUBLE,0,222,proc_grid, &status);
 	}
+
+	// The other processes receive their assigned block of data
+	MPI_Recv(blockA,count*count,MPI_DOUBLE,0,111,proc_grid, &status);
+	MPI_Recv(blockB,count*count,MPI_DOUBLE,0,222,proc_grid, &status);
+
 
 	tempA=(double*)calloc(count*count,sizeof(double));
 	tempB=(double*)calloc(count*count,sizeof(double));
