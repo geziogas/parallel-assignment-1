@@ -129,11 +129,11 @@ int main(int argc, char *argv[])
 
 	printf("Welcome. I am process No %d / coords: %d.%d\n",my_id,row_rank,column_rank);
 	
-//first task ->broadcast blocks
-//fox algorithm
-//Allgather???
-//print apo ton rank 0??
-//na grapsoume kai serial code???
+	//first task ->broadcast blocks
+	//fox algorithm
+	//Allgather???
+	//print apo ton rank 0??
+	//na grapsoume kai serial code???
 	/************************************************************
 	Part where we divide the matrices into blocks
 	We assume for simplicity that the partitioning is performed
@@ -147,30 +147,15 @@ int main(int argc, char *argv[])
 	blocks = sqrt(nproc); // One dimension number of blocks
 	blocklen = n/blocks;	  // length of each block
 	printf("Length of block: %d\n", blocklen);
- MPI_Bcast(&blocklen,1,MPI_DOUBLE,0,MPI_COMM_WORLD);//den eimai sigouros gia ton communicator
+	 MPI_Bcast(&blocklen,1,MPI_DOUBLE,0,MPI_COMM_WORLD);//den eimai sigouros gia ton communicator
 	// Create local blocks for the processors
    
 
 	//MPI_Bcast(&blocklen,1,MPI_INT,0,proc_grid);
-if(my_id!=root){
-printf("length received is %d",blocklen );
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	if(my_id!=root)
+	{
+		printf("length received is %d",blocklen );
+	}
 
   	// Free memory after execution
   	MPI_Comm_free(&proc_row);
