@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <string.h> /* memset */
+#include <unistd.h> /* close */
 
 int main(int argc, char *argv[])
 {
@@ -89,10 +91,10 @@ int main(int argc, char *argv[])
 	  	for(row=0;row<n;row++){
 			for(col=0;col<n;col++)
 			{
-				/* Gia to testing A= monadiaios pinakas
-				 * A[row*n+col]=0;
-				 * if(row=col){A[row*n+col]=1;}*/
-				A[row*n+col]=rand()/divisor;
+				// Gia to testing A= monadiaios pinakas
+				  A[row*n+col]=0;
+				  if(row=col){A[row*n+col]=1;}
+				//A[row*n+col]=rand()/divisor;
 				B[row*n+col]=rand()/divisor;
 			}
 
@@ -165,9 +167,9 @@ int main(int argc, char *argv[])
 		MPI_Recv(blockB,count*count,MPI_DOUBLE,0,222,proc_grid, &status);
 	}
 
-	tempA=(double*)calloc(count*count*sizeof(double));
-	tempB=(double*)calloc(count*count*sizeof(double));
-	temp=(double*)calloc(count*count*sizeof(double));
+	tempA=(double*)calloc(count*count,sizeof(double));
+	tempB=(double*)calloc(count*count,sizeof(double));
+	temp=(double*)calloc(count*count,sizeof(double));
 
 	// Measure the processing time
 	if(my_id==root){
@@ -195,7 +197,7 @@ int main(int argc, char *argv[])
 	if(my_id==root){
 		end_time = clock();
 		total = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-		printf("Total time taken by CPU: %f s\n",total);
+		printf("Total time taken by CPU: %lf s\n",total);
 	}
 
 	// Send every block back
