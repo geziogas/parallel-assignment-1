@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 			{
 				// Gia to testing A= monadiaios pinakas
 				  A[row*n+col]=0;
-				  if(row=col){A[row*n+col]=1;}
+				  if(row==col){A[row*n+col]=1;}
 				//A[row*n+col]=rand()/divisor;
 				B[row*n+col]=rand()/divisor;
 			}
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
 	// The other processes receive their assigned block of data
 	MPI_Recv(blockA,count*count,MPI_DOUBLE,0,111,proc_grid, &status);
 	MPI_Recv(blockB,count*count,MPI_DOUBLE,0,222,proc_grid, &status);
-
+  // printf("Iam  and i got %f,%f,%f,%f /n",blockB[0],blockB[1],blockB[2],blockB[3]);
 
 	tempA=(double*)calloc(count*count,sizeof(double));
 	tempB=(double*)calloc(count*count,sizeof(double));
@@ -180,33 +180,42 @@ int main(int argc, char *argv[])
 	// Start Fox’s algorithm
 	memcpy(tempA,blockA,count*count*sizeof(double));
 	for(k=0;k<limit;k++){
-		MPI_Bcast(blockA,count*count,MPI_DOUBLE,(column_rank+k)%limit,proc_row);
+		MPI_Bcast(blockA,count*count,MPI_DOUBLE,(row_rank+k)%limit,proc_row);
+		//MPI_Bcast(blockA,count*count,MPI_DOUBLE,(column_rank+k)%limit,proc_row);
 		MPI_Isend(blockB,count*count, MPI_DOUBLE,(column_rank+column_size-1)%column_size,111,proc_column,&r1);
-		MPI_Irecv(tempB,count*count,MPI_DOUBLE,(column_rank+1)%column_size,111,proc_column,&r2);
-		for(row=0;row<count;row++)
-			for(col=0;col<count;col++)
-				for(y=0;y<count;y++)
-					blockC[col*count+y]+=blockA[col*count+row]*blockB[row*count+y];
+		MPI_Irecv(tempB,count*count,MPI_DOUBLE,MPI_ANY_SOURCE,111,proc_column,&r2);
+		 printf("Iam %d  and i got %f,%f,%f,%f \n",my_id,tempB[0],tempB[1],tempB[2],tempB[3]);
+		for(row=0;row<count;row++){
+			for(col=0;col<count;col++){
+				for(y=0;y<count;y++){
+					blockC[col*count+y]+=blockA[col*count+row]*blockB[row*count+y];}
+				}
+			}
 		MPI_Wait(&r1,&status);
 		MPI_Wait(&r2,&status);
-		temp=blockB;
-		blockB=tempB;
-		tempB=temp;
+		memcpy(temp,blockB,count*count*sizeof(double));
+		memcpy(blockB,tempB,count*count*sizeof(double));
+		memcpy(tempB,temp,count*count*sizeof(double));
+		//temp=blockB;
+		//blockB=tempB;
+		//tempB=temp;
 	}
+	//printf("Iam  and i got %f,%f,%f,%f /n",blockC[0],blockC[1],blockC[2],blockC[3]);
+	
 
 	// Print total time taken
 	if(my_id==root){
 		end_time = clock();
 		total = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-		printf("Total time taken by CPU: %lf s\n",total);
+		printf("Total time taken by CPU: %lf s/n",total);
 	}
-
+  
 	// Send every block back
 	MPI_Isend(blockC,count*count,MPI_DOUBLE,0,111,proc_grid,&r1);
 	if(my_id==root){
 		for(row=0;row<nproc;row++){
 			MPI_Probe(MPI_ANY_SOURCE,111,proc_grid,&status);
-			MPI_Cart_coords(proc_grid,nproc,1,handler);
+			//MPI_Cart_coords(proc_grid,nproc,1,handler);
 			for(col=0;col<n*n;col++)
 				if (C[col]==0)
 					break;
