@@ -178,13 +178,13 @@ int main(int argc, char *argv[])
 	}
 
 	// Start Fox’s algorithm
-	memcpy(tempA,blockA,count*count*sizeof(double));
+	//memcpy(tempA,blockA,count*count*sizeof(double));
 	for(k=0;k<limit;k++){
 		MPI_Bcast(blockA,count*count,MPI_DOUBLE,(row_rank+k)%limit,proc_row);
 		//MPI_Bcast(blockA,count*count,MPI_DOUBLE,(column_rank+k)%limit,proc_row);
 		MPI_Isend(blockB,count*count, MPI_DOUBLE,(column_rank+column_size-1)%column_size,111,proc_column,&r1);
 		MPI_Irecv(tempB,count*count,MPI_DOUBLE,MPI_ANY_SOURCE,111,proc_column,&r2);
-		 printf("Iam %d  and i got %f,%f,%f,%f \n",my_id,tempB[0],tempB[1],tempB[2],tempB[3]);
+		// printf("Iam %d  and i got %f,%f,%f,%f \n",my_id,tempB[0],tempB[1],tempB[2],tempB[3]);
 		for(row=0;row<count;row++){
 			for(col=0;col<count;col++){
 				for(y=0;y<count;y++){
@@ -193,9 +193,9 @@ int main(int argc, char *argv[])
 			}
 		MPI_Wait(&r1,&status);
 		MPI_Wait(&r2,&status);
-		memcpy(temp,blockB,count*count*sizeof(double));
-		memcpy(blockB,tempB,count*count*sizeof(double));
-		memcpy(tempB,temp,count*count*sizeof(double));
+		//memcpy(temp,blockB,count*count*sizeof(double));
+		//memcpy(blockB,tempB,count*count*sizeof(double));
+		//memcpy(tempB,temp,count*count*sizeof(double));
 		//temp=blockB;
 		//blockB=tempB;
 		//tempB=temp;
