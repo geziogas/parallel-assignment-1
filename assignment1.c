@@ -141,9 +141,9 @@ int main(int argc, char *argv[])
 	MPI_Type_commit(&newtype);
 
 	// Create space for each process's block
-	blockA=(double*)calloc(count*count*sizeof(double));
-	blockB=(double*)calloc(count*count*sizeof(double));
-	blockC=(double*)calloc(count*count*sizeof(double));
+	blockA=(double*)calloc(count*count,sizeof(double));
+	blockB=(double*)calloc(count*count,sizeof(double));
+	blockC=(double*)calloc(count*count,sizeof(double));
 
 	// Root process sends each other process their assigned block of data
 	if(my_id==root) {
@@ -188,8 +188,18 @@ int main(int argc, char *argv[])
   	MPI_Comm_free(&proc_row);
   	MPI_Comm_free(&proc_column);
   	MPI_Comm_free(&proc_grid);
-  	MPI_Finalize();
-
+  	
+if(my_id==root) {
 	free(A),free(B),free(C);
+	free(blockA);
+	free(blockB);
+	free(blockC);
+}else{
+free(blockA);
+	free(blockB);
+	free(blockC);
+
+}
+MPI_Finalize();
   	return 0;
 }
