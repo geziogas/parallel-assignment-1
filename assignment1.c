@@ -88,8 +88,16 @@ int main(int argc, char *argv[])
 
 	  	for(row=0;row<n;row++){
 			for(col=0;col<n;col++)
-			{
-				A[row*n+col]=rand()/divisor;
+			{/* 
+			Gia to testining A= monadiaios pinakas
+			
+				A[row*n+col]=0;
+            if(row=col){A[row*n+col]=1;}
+   			 
+  			 */					
+				
+				
+				A[row*n+col]=rand()/divisor;				
 				B[row*n+col]=rand()/divisor;
 			}
 
@@ -171,6 +179,13 @@ int main(int argc, char *argv[])
 	}
 
 
+
+
+
+
+
+
+
 	// Part to show the result C matrix
 	if(my_id==root) {
 		printf("\nResult C after A*B:\n");
@@ -195,7 +210,7 @@ if(my_id==root) {
 	free(blockB);
 	free(blockC);
 }else{
-free(blockA);
+	free(blockA);
 	free(blockB);
 	free(blockC);
 
