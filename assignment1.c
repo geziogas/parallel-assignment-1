@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
 	if (my_id==root)
 	{
-		printf("I am the root proc.\n");
+		printf("I am the root process.\n");
   		printf("Size of matrices: %d\n",n);
   		printf("number of processors: %d\n",nproc);
 	}
@@ -123,10 +123,6 @@ int main(int argc, char *argv[])
 	}  	
 	
   	
-	if(my_id==root) {
-		printf("\nI am the root. Number of processes: %d\n",nproc);
-	}
-
 	printf("Welcome. I am process No %d / coords: %d.%d\n",my_id,row_rank,column_rank);
 	
 	//first task ->broadcast blocks
@@ -143,16 +139,33 @@ int main(int argc, char *argv[])
 	
 	blocks = sqrt(nproc); // One dimension number of blocks
 	blocklen = n/blocks;	  // length of each block
-	printf("Length of block: %d\n", blocklen);
+	
+	if(my_id==root) {
+		printf("Length of block to send: %d\n", blocklen);
+	} 
 	 // MPI_Bcast(&blocklen,1,MPI_DOUBLE,0,MPI_COMM_WORLD);//den eimai sigouros gia ton communicator
 	
 	// Create local blocks for the processors
    
 
 	MPI_Bcast(&blocklen,1,MPI_INT,0,proc_grid);
+
 	if(my_id!=root)
 	{
-		printf("length received is %d\n",blocklen );
+		printf("Proc.%d: length received is %d\n",my_id,blocklen );
+	}
+
+	// Part to show the result C matrix
+	if(my_id==root) {
+		printf("\nResult C after A*B:\n");
+		for(row=0;row<n;row++){
+			for(col=0;col<n;col++)
+			{
+				printf("%f ",C[row*n+col]);
+			}
+			printf("\n");
+		}
+		printf("\n");
 	}
 
   	// Free memory after execution
