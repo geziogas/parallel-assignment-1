@@ -140,21 +140,19 @@ int main(int argc, char *argv[])
 	like :  partition-length is the square root of nproc.
 	Nx = Ny = square_root(nproc)
 	*************************************************************/
-	if(my_id==root) {
-		printf("\nI am the root. Number of processes: %d\n",nproc);
-	}
-
+	
 	blocks = sqrt(nproc); // One dimension number of blocks
 	blocklen = n/blocks;	  // length of each block
 	printf("Length of block: %d\n", blocklen);
-	 MPI_Bcast(&blocklen,1,MPI_DOUBLE,0,MPI_COMM_WORLD);//den eimai sigouros gia ton communicator
+	 // MPI_Bcast(&blocklen,1,MPI_DOUBLE,0,MPI_COMM_WORLD);//den eimai sigouros gia ton communicator
+	
 	// Create local blocks for the processors
    
 
-	//MPI_Bcast(&blocklen,1,MPI_INT,0,proc_grid);
+	MPI_Bcast(&blocklen,1,MPI_INT,0,proc_grid);
 	if(my_id!=root)
 	{
-		printf("length received is %d",blocklen );
+		printf("length received is %d\n",blocklen );
 	}
 
   	// Free memory after execution
