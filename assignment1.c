@@ -92,17 +92,15 @@ int main(int argc, char *argv[])
 	  	for(row=0;row<n;row++){
 			for(col=0;col<n;col++)
 			{
-				// A[row*n+col]=rand()/divisor;
-				// B[row*n+col]=rand()/divisor;
+				 A[row*n+col]=rand()/divisor;
+				 B[row*n+col]=rand()/divisor;
 				/* Just to test the correctness of our program we set one of the matrices to
 				 * be the identity matrix */
-				// A[row*n+col]=0;
-				B[row*n+col]=2;
-				if(row==col){
-					A[row*n+col]=1;
-				}
+				 /*A[row*n+col]=0;
+				 if(row==col){
+					 A[row*n+col]=1;
+				 }*/
 			}
-
 		}
 
 		/*// Test code, to show the 2 random generated matrices
@@ -121,15 +119,6 @@ int main(int argc, char *argv[])
 			for(col=0;col<n;col++)
 			{
 				printf("%f ",B[row*n+col]);
-			}
-			printf("\n");
-		}
-
-		printf("\nMatrix C:\n");
-		for(row=0;row<n;row++){
-			for(col=0;col<n;col++)
-			{
-				printf("%f ",C[row*n+col]);
 			}
 			printf("\n");
 		}*/
@@ -173,11 +162,6 @@ int main(int argc, char *argv[])
 	MPI_Recv(blockA,count*count,MPI_DOUBLE,0,111,proc_grid, &status);
 	MPI_Recv(blockB,count*count,MPI_DOUBLE,0,222,proc_grid, &status);
 
-	/*// Start point to measure the processing time
-	if(my_id==root){
-		start_time = clock();
-	}*/
-
 	tempA=(double*)calloc(count*count,sizeof(double));
 	tempB=(double*)calloc(count*count,sizeof(double));
 
@@ -214,13 +198,6 @@ int main(int argc, char *argv[])
 		MPI_Wait(&r2,&status);
 		memcpy(blockB,tempB,count*count*sizeof(double));
 	}
-
-	/*// Print total time taken
-	if(my_id==root){
-		end_time = clock();
-		total = (double)(end_time - start_time) / CLOCKS_PER_SEC;
-		printf("Total time taken by CPU: %lf s\n",total);
-	}*/
   
 	// Send the resulting blocks back to the root process
 	MPI_Isend(blockC,count*count,MPI_DOUBLE,0,111,proc_grid,&r1);
