@@ -22,7 +22,8 @@ int main(int argc, char *argv[])
 	int x,y,k,count,blocklength,stride,limit,temp_rank;
 	double *blockA,*blockB,*blockC;
 	double *A,*B,*C,*tempB,*tempA;
-	clock_t start_time,end_time,total;
+	clock_t start_time,end_time;
+	double total;
 	MPI_Comm proc_grid,proc_row,proc_column;
 	MPI_Datatype newtype;
 	MPI_Request r1,r2;
@@ -91,19 +92,20 @@ int main(int argc, char *argv[])
 	  	for(row=0;row<n;row++){
 			for(col=0;col<n;col++)
 			{
-				A[row*n+col]=rand()/divisor;
-				B[row*n+col]=rand()/divisor;
+				// A[row*n+col]=rand()/divisor;
+				// B[row*n+col]=rand()/divisor;
 				/* Just to test the correctness of our program we set one of the matrices to
 				 * be the identity matrix */
-				/*A[row*n+col]=0;
+				// A[row*n+col]=0;
+				B[row*n+col]=2;
 				if(row==col){
 					A[row*n+col]=1;
-				}*/
+				}
 			}
 
 		}
 
-		// Test code, to show the 2 random generated matrices
+		/*// Test code, to show the 2 random generated matrices
 		printf("\nMatrix A:\n");
 		for(row=0;row<n;row++){
 			for(col=0;col<n;col++)
@@ -130,9 +132,14 @@ int main(int argc, char *argv[])
 				printf("%f ",C[row*n+col]);
 			}
 			printf("\n");
-		}
+		}*/
 
 		printf("\n");
+	}
+
+	// Start point to measure the processing time
+	if(my_id==root){
+		start_time = MPI_Wtime();
 	}
 
 	limit = sqrt(nproc);
@@ -166,10 +173,10 @@ int main(int argc, char *argv[])
 	MPI_Recv(blockA,count*count,MPI_DOUBLE,0,111,proc_grid, &status);
 	MPI_Recv(blockB,count*count,MPI_DOUBLE,0,222,proc_grid, &status);
 
-	// Start point to measure the processing time
+	/*// Start point to measure the processing time
 	if(my_id==root){
 		start_time = clock();
-	}
+	}*/
 
 	tempA=(double*)calloc(count*count,sizeof(double));
 	tempB=(double*)calloc(count*count,sizeof(double));
@@ -208,12 +215,12 @@ int main(int argc, char *argv[])
 		memcpy(blockB,tempB,count*count*sizeof(double));
 	}
 
-	// Print total time taken
+	/*// Print total time taken
 	if(my_id==root){
 		end_time = clock();
 		total = (double)(end_time - start_time) / CLOCKS_PER_SEC;
 		printf("Total time taken by CPU: %lf s\n",total);
-	}
+	}*/
   
 	// Send the resulting blocks back to the root process
 	MPI_Isend(blockC,count*count,MPI_DOUBLE,0,111,proc_grid,&r1);
@@ -232,7 +239,7 @@ int main(int argc, char *argv[])
 
 
 	// Testing to show the resulting C matrix
-	if(my_id==root) {
+	/*if(my_id==root) {
 		printf("\nResult C after A*B:\n");
 		for(row=0;row<n;row++){
 			for(col=0;col<n;col++)
@@ -242,6 +249,13 @@ int main(int argc, char *argv[])
 			printf("\n");
 		}
 		printf("\n");
+	}
+*/
+	// Print total time taken
+	if(my_id==root){
+		total = MPI_Wtime() - start_time;
+		// total = (double)end_time*1000 / CLOCKS_PER_SEC;
+		printf("Wall time: %f seconds\n",total);
 	}
 
   	// Free memory after execution
